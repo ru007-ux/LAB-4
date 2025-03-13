@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fish Weight Predictor</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        input { margin: 5px; padding: 8px; width: 200px; }
+        button { padding: 10px; cursor: pointer; }
+        .container { max-width: 500px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Fish Weight Predictor</h2>
+        <input type="text" id="species" placeholder="Species">
+        <input type="text" id="length1" placeholder="Length 1">
+        <input type="text" id="length2" placeholder="Length 2">
+        <input type="text" id="length3" placeholder="Length 3">
+        <input type="text" id="height" placeholder="Height">
+        <input type="text" id="width" placeholder="Width">
+        <br><br>
+        <button onclick="getPrediction()">Predict</button>
+        <h3 id="result"></h3>
+    </div>
+
+    <script>
+        function getPrediction() {
+            let data = {
+                "species": $("#species").val(),
+                "length1": $("#length1").val(),
+                "length2": $("#length2").val(),
+                "length3": $("#length3").val(),
+                "height": $("#height").val(),
+                "width": $("#width").val()
+            };
+
+            $.ajax({
+                url: "/predict",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function(response) {
+                    $("#result").text("Predicted Weight: " + response.prediction + " grams");
+                },
+                error: function() {
+                    $("#result").text("Error in prediction");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
